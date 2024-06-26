@@ -1,6 +1,7 @@
 #include "change_dialog.h"
 #include "ui_change_dialog.h"
 
+#include "../mainwindow/mainwindow.h"
 
 change_dialog::change_dialog(const QString &title, const QString &description, mainwindow *parent) : QMainWindow(parent), ui(new Ui::change_dialog), mainwindowptr(parent) {
     ui->setupUi(this);

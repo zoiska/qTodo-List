@@ -13,7 +13,7 @@ mainwindow::mainwindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::mainwi
 
     QObject::connect(load_act, &QAction::triggered, this, &mainwindow::load_clicked);
     QObject::connect(save_act, &QAction::triggered, this, &mainwindow::save_clicked);
-
+    load_clicked();
 }
 
 mainwindow::~mainwindow() {
@@ -69,7 +69,7 @@ void mainwindow::create_menus() {
 
 void mainwindow::load_clicked() const {
     ui->listWidget->clear();
-    QFile file("../tasks.csv");
+    QFile file("../../tasks.csv");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         ui->label_out->setText("Failed to open file");
@@ -79,7 +79,7 @@ void mainwindow::load_clicked() const {
     while (!in.atEnd())
     {
         QString line = in.readLine();
-        QStringList fields = line.split(";");
+        QStringList fields = line.split(",");
         if (fields.size() == 2)
         {
             QString title = fields[0];
@@ -91,7 +91,7 @@ void mainwindow::load_clicked() const {
 }
 
 void mainwindow::save_clicked() const {
-    QFile file("../tasks.csv");
+    QFile file("../../tasks.csv");
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
         ui->label_out->setText("Failed to open file");
@@ -105,7 +105,7 @@ void mainwindow::save_clicked() const {
         QStringList parts = text.split("\n");
         QString title = parts[0];
         QString description = parts[1];
-        out << title << ";" << description << "\n";
+        out << title << "," << description << "\n";
     }
     file.close();
 }

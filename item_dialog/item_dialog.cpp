@@ -1,6 +1,7 @@
 #include "item_dialog.h"
 #include "ui_item_dialog.h"
 
+#include "../mainwindow/mainwindow.h"
 
 item_dialog::item_dialog(mainwindow *parent) : QMainWindow(parent), ui(new Ui::item_dialog), mainwindowptr(parent) {
     ui->setupUi(this);

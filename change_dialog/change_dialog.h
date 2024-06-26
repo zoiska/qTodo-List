@@ -2,8 +2,6 @@
 #define CHANGE_DIALOG_H
 
 #include <QMainWindow>
-#include "../mainwindow/mainwindow.h"
-
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class change_dialog; }
