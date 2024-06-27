@@ -5,23 +5,23 @@
 #include <QListWidget>
 #include <QMenuBar>
 #include <QFile>
-#include "../item_dialog/item_dialog.h"
-#include "../change_dialog/change_dialog.h"
+#include "../item_dialog/itemdialog.h"
+#include "../change_dialog/changedialog.h"
 
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class mainwindow; }
+namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class mainwindow : public QMainWindow {
+class MainWindow : public QMainWindow {
 Q_OBJECT
 
 public:
-    Ui::mainwindow *ui;
+    Ui::MainWindow *ui;
 
-    explicit mainwindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
 
-    ~mainwindow() override;
+    ~MainWindow() override;
 
 public slots:
     void add_clicked();
@@ -37,8 +37,8 @@ private:
     void setupConnects();
     QAction *load_act;
     QAction *save_act;
-    item_dialog *itemDialog = new item_dialog(this);
-    change_dialog *changeDialog = new change_dialog(this);
+    ItemDialog *itemDialog = new ItemDialog(this);
+    ChangeDialog *changeDialog = new ChangeDialog(this);
 };
 
 
