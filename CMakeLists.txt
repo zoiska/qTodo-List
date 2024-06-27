@@ -74,3 +74,5 @@ install(TARGETS qTodo-List
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(qTodo-List)
 endif()
+
+add_compile_definitions(SAVE_FILE="${CMAKE_SOURCE_DIR}/tasks.csv")

@@ -4,15 +4,8 @@
 
 mainwindow::mainwindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::mainwindow) {
     ui->setupUi(this);
-
     create_menus();
-
-    QObject::connect(ui->button_add, &QPushButton::clicked, this, &mainwindow::add_clicked);
-    QObject::connect(ui->button_change, &QPushButton::clicked, this, &mainwindow::change_clicked);
-    QObject::connect(ui->button_delete, &QPushButton::clicked, this, &mainwindow::delete_clicked);
-
-    QObject::connect(load_act, &QAction::triggered, this, &mainwindow::load_clicked);
-    QObject::connect(save_act, &QAction::triggered, this, &mainwindow::save_clicked);
+    setupConnects();
     load_clicked();
 }
 
@@ -20,10 +13,10 @@ mainwindow::~mainwindow() {
     delete ui;
 }
 
-void mainwindow::add_clicked() {
-    auto *w = new item_dialog(this);
-    QObject::connect(w, &item_dialog::add_item, this, &mainwindow::add_list_item);
-    w->show();
+void mainwindow::add_clicked()
+{
+    itemDialog->clear();
+    itemDialog->show();
 }
 
 void mainwindow::change_clicked() {
@@ -35,9 +28,12 @@ void mainwindow::change_clicked() {
         QString title = parts[0];
         QString description = parts[1];
 
-        auto *w = new change_dialog(title, description, this);
-        QObject::connect(w, &change_dialog::add_item, this, &mainwindow::change_list_item);
-        w->show();
+        //auto *w = new change_dialog(this);
+        //w->fillInputs(title, description);
+        //QObject::connect(w, &change_dialog::add_item, this, &mainwindow::change_list_item);
+        //w->show();
+        changeDialog->fillInputs(title, description);
+        changeDialog->show();
     }
 }
 
@@ -69,7 +65,7 @@ void mainwindow::create_menus() {
 
 void mainwindow::load_clicked() const {
     ui->listWidget->clear();
-    QFile file("../../tasks.csv");
+    QFile file(SAVE_FILE);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         ui->label_out->setText("Failed to open file");
@@ -91,7 +87,7 @@ void mainwindow::load_clicked() const {
 }
 
 void mainwindow::save_clicked() const {
-    QFile file("../../tasks.csv");
+    QFile file(SAVE_FILE);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
         ui->label_out->setText("Failed to open file");
@@ -108,4 +104,17 @@ void mainwindow::save_clicked() const {
         out << title << "," << description << "\n";
     }
     file.close();
+}
+
+void mainwindow::setupConnects()
+{
+    QObject::connect(ui->button_add, &QPushButton::clicked, this, &mainwindow::add_clicked);
+    QObject::connect(ui->button_change, &QPushButton::clicked, this, &mainwindow::change_clicked);
+    QObject::connect(ui->button_delete, &QPushButton::clicked, this, &mainwindow::delete_clicked);
+
+    QObject::connect(load_act, &QAction::triggered, this, &mainwindow::load_clicked);
+    QObject::connect(save_act, &QAction::triggered, this, &mainwindow::save_clicked);
+
+    QObject::connect(itemDialog, &item_dialog::add_item, this, &mainwindow::add_list_item);
+    QObject::connect(changeDialog, &change_dialog::add_item, this, &mainwindow::change_list_item);
 }

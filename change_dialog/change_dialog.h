@@ -13,9 +13,11 @@ class change_dialog : public QMainWindow {
 Q_OBJECT
 
 public:
-    explicit change_dialog(const QString &title, const QString &description, mainwindow *parent = nullptr);
+    explicit change_dialog(mainwindow *parent = nullptr);
 
     ~change_dialog() override;
+
+    void fillInputs(const QString &title, const QString &description);
 
 signals:
     void add_item(QString title,QString description);

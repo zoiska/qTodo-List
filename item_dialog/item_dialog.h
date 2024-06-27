@@ -17,6 +17,8 @@ public:
 
     ~item_dialog() override;
 
+    void clear();
+
 signals:
     void add_item(QString title,QString description);
 
