@@ -13,6 +13,80 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+	background-color: #444448;
+}
+
+QMenuBar {
+	background-color: #444448;
+	color: #ffffff;
+}
+
+QMenu{
+	background-color: #66666a;
+	color: #ffffff;
+}
+
+QMenu::item:selected{
+	background-color: #555559;
+	color: #ffffff;
+}
+
+QListWidget {
+	background-color: #66666a;
+	border: 1px solid #555b65;
+    border-radius: 5px;
+}
+
+QListWidget::item{
+	background-color: #61636a;
+	border-radius: 5px;
+	color: #ffffff;
+}
+
+QListWidget::item:hover{
+	background-color: #6d717b;
+}
+
+QTextEdit {
+	background-color: #66666a;
+	color: #ffffff;
+	border: 1px solid #555b65;
+    border-radius: 5px;
+}
+
+QLineEdit {
+	background-color: #66666a;
+color: #ffffff;
+	border: 1px solid #555b65;
+    border-radius: 5px;
+}
+
+QLabel {
+	background-color: #444448;
+	color: #ffffff;
+}
+
+QPushButton {
+    background-color: #2e2e31;
+    color: #ffffff;
+    border: 1px solid #555b65;
+    border-radius: 5px;
+    padding: 5px 15px;
+	font-size: 15px;
+}
+
+QPushButton:hover {
+    background-color: #3e3e41;
+    border: 1px solid #666666;
+}
+
+QPushButton:pressed {
+    background-color: #1e1e21;
+    border: 1px solid #444444;
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="enabled">
     <bool>true</bool>
@@ -240,6 +314,16 @@
         <property name="wordWrap">
          <bool>false</bool>
         </property>
+        <item>
+         <property name="text">
+          <string>qwe</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>qweqwe</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>
