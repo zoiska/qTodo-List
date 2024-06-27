@@ -4,18 +4,16 @@
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class change_dialog; }
+namespace Ui { class ChangeDialog; }
 QT_END_NAMESPACE
 
-class mainwindow;
-
-class change_dialog : public QMainWindow {
+class ChangeDialog : public QMainWindow {
 Q_OBJECT
 
 public:
-    explicit change_dialog(mainwindow *parent = nullptr);
+    explicit ChangeDialog(QWidget *parent = nullptr);
 
-    ~change_dialog() override;
+    ~ChangeDialog() override;
 
     void fillInputs(const QString &title, const QString &description);
 
@@ -27,8 +25,7 @@ public slots:
     void button_cancel_clicked();
 
 private:
-    Ui::change_dialog *ui;
-    mainwindow *mainwindowptr;
+    Ui::ChangeDialog *ui;
 };
 
 

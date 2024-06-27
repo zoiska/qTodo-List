@@ -17,11 +17,11 @@ set(PROJECT_SOURCES
         mainwindow/mainwindow.cpp
         mainwindow/mainwindow.h
         mainwindow/mainwindow.ui
-        item_dialog/item_dialog.cpp
-        item_dialog/item_dialog.h
+        item_dialog/itemdialog.cpp
+        item_dialog/itemdialog.h
         item_dialog/item_dialog.ui
-        change_dialog/change_dialog.cpp
-        change_dialog/change_dialog.h
+        change_dialog/changedialog.cpp
+        change_dialog/changedialog.h
         change_dialog/change_dialog.ui
 )
 
@@ -75,4 +75,6 @@ if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(qTodo-List)
 endif()
 
-add_compile_definitions(SAVE_FILE="${CMAKE_SOURCE_DIR}/tasks.csv")
+add_compile_definitions(SAVE_FILE="${CMAKE_SOURCE_DIR}/data/tasks.csv")
+add_compile_definitions(SAVE_ICON="${CMAKE_SOURCE_DIR}/data/disk.png")
+add_compile_definitions(LOAD_ICON="${CMAKE_SOURCE_DIR}/data/file.png")

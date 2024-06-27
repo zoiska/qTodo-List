@@ -2,68 +2,71 @@
 #include "ui_mainwindow.h"
 
 
-mainwindow::mainwindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::mainwindow) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     create_menus();
     setupConnects();
     load_clicked();
 }
 
-mainwindow::~mainwindow() {
+MainWindow::~MainWindow() {
     delete ui;
 }
 
-void mainwindow::add_clicked()
-{
+void MainWindow::add_clicked() {
     itemDialog->clear();
     itemDialog->show();
 }
 
-void mainwindow::change_clicked() {
+void MainWindow::change_clicked() {
     if(ui->listWidget->currentItem() != nullptr) {
         QListWidgetItem *selectedItem = ui->listWidget->currentItem();
         QString text = selectedItem->text();
 
         QStringList parts = text.split('\n');
         QString title = parts[0];
-        QString description = parts[1];
+        QString description = "";
+        for (int j = 1; j < parts.size() - 1; ++j) {
+            description += parts[j] + "\n";
+        }
+        description += parts[parts.size() - 1];
 
-        //auto *w = new change_dialog(this);
-        //w->fillInputs(title, description);
-        //QObject::connect(w, &change_dialog::add_item, this, &mainwindow::change_list_item);
-        //w->show();
         changeDialog->fillInputs(title, description);
         changeDialog->show();
     }
 }
 
-void mainwindow::delete_clicked() const {
+void MainWindow::delete_clicked() const {
     QListWidgetItem *selectedItem = ui->listWidget->currentItem();
     delete ui->listWidget->takeItem(ui->listWidget->row(selectedItem));
 }
 
-void mainwindow::add_list_item(const QString& title, const QString& description) const {
+void MainWindow::add_list_item(const QString& title, const QString& description) const {
     ui->listWidget->addItem(title + "\n" + description);
 }
 
-void mainwindow::change_list_item(const QString &title, const QString &description) const {
+void MainWindow::change_list_item(const QString &title, const QString &description) const {
     QListWidgetItem *selectedItem = ui->listWidget->currentItem();
     delete ui->listWidget->takeItem(ui->listWidget->row(selectedItem));
     ui->listWidget->addItem(title + "\n" + description);
 }
 
-void mainwindow::create_menus() {
+void MainWindow::create_menus() {
     load_act = new QAction("Load tasks", this);
     load_act->setToolTip(tr("Load tasks from file"));
+    load_act->setShortcut(QKeySequence("CTRL+L"));
+    load_act->setIcon(QIcon(LOAD_ICON));
     save_act = new QAction("Save tasks", this);
     save_act->setToolTip(tr("Save current tasks"));
+    save_act->setShortcut(QKeySequence("CTRL+S"));
+    save_act->setIcon(QIcon(SAVE_ICON));
     QMenuBar *bar = menuBar();
     QMenu *file_menu = bar->addMenu(tr("Menu"));
     file_menu->addAction(load_act);
     file_menu->addAction(save_act);
 }
 
-void mainwindow::load_clicked() const {
+void MainWindow::load_clicked() const {
     ui->listWidget->clear();
     QFile file(SAVE_FILE);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -80,13 +83,13 @@ void mainwindow::load_clicked() const {
         {
             QString title = fields[0];
             QString description = fields[1];
-            ui->listWidget->addItem(title + "\n" + description);
+            ui->listWidget->addItem(title.replace("[COMMA]", ",") + "\n" + description.replace("[COMMA]", ",").replace("\\n", "\n"));
         }
     }
     file.close();
 }
 
-void mainwindow::save_clicked() const {
+void MainWindow::save_clicked() const {
     QFile file(SAVE_FILE);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
@@ -99,22 +102,25 @@ void mainwindow::save_clicked() const {
         QListWidgetItem *item = ui->listWidget->item(i);
         QString text = item->text();
         QStringList parts = text.split("\n");
-        QString title = parts[0];
-        QString description = parts[1];
+        QString title = parts[0].replace(",", "[COMMA]");
+        QString description = "";
+        for (int j = 1; j < parts.size() - 1; ++j) {
+            description += parts[j].replace(",", "[COMMA]") + "\\n";
+        }
+        description += parts[parts.size() - 1].replace(",", "[COMMA]");
         out << title << "," << description << "\n";
     }
     file.close();
 }
 
-void mainwindow::setupConnects()
-{
-    QObject::connect(ui->button_add, &QPushButton::clicked, this, &mainwindow::add_clicked);
-    QObject::connect(ui->button_change, &QPushButton::clicked, this, &mainwindow::change_clicked);
-    QObject::connect(ui->button_delete, &QPushButton::clicked, this, &mainwindow::delete_clicked);
+void MainWindow::setupConnects() {
+    QObject::connect(ui->button_add, &QPushButton::clicked, this, &MainWindow::add_clicked);
+    QObject::connect(ui->button_change, &QPushButton::clicked, this, &MainWindow::change_clicked);
+    QObject::connect(ui->button_delete, &QPushButton::clicked, this, &MainWindow::delete_clicked);
 
-    QObject::connect(load_act, &QAction::triggered, this, &mainwindow::load_clicked);
-    QObject::connect(save_act, &QAction::triggered, this, &mainwindow::save_clicked);
+    QObject::connect(load_act, &QAction::triggered, this, &MainWindow::load_clicked);
+    QObject::connect(save_act, &QAction::triggered, this, &MainWindow::save_clicked);
 
-    QObject::connect(itemDialog, &item_dialog::add_item, this, &mainwindow::add_list_item);
-    QObject::connect(changeDialog, &change_dialog::add_item, this, &mainwindow::change_list_item);
+    QObject::connect(itemDialog, &ItemDialog::add_item, this, &MainWindow::add_list_item);
+    QObject::connect(changeDialog, &ChangeDialog::add_item, this, &MainWindow::change_list_item);
 }
