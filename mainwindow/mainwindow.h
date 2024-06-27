@@ -34,8 +34,11 @@ public slots:
     void save_clicked() const;
 
 private:
+    void setupConnects();
     QAction *load_act;
     QAction *save_act;
+    item_dialog *itemDialog = new item_dialog(this);
+    change_dialog *changeDialog = new change_dialog(this);
 };
 
 

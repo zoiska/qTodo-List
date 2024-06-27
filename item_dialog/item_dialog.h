@@ -2,8 +2,6 @@
 #define ITEM_DIALOG_H
 
 #include <QMainWindow>
-#include "../mainwindow/mainwindow.h"
-
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class item_dialog; }
@@ -18,6 +16,8 @@ public:
     explicit item_dialog(mainwindow *parent = nullptr);
 
     ~item_dialog() override;
+
+    void clear();
 
 signals:
     void add_item(QString title,QString description);
