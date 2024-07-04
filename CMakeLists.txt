@@ -76,5 +76,5 @@ if(QT_VERSION_MAJOR EQUAL 6)
 endif()
 
 add_compile_definitions(SAVE_FILE="${CMAKE_SOURCE_DIR}/data/tasks.csv")
-add_compile_definitions(SAVE_ICON="${CMAKE_SOURCE_DIR}/data/disk.png")
-add_compile_definitions(LOAD_ICON="${CMAKE_SOURCE_DIR}/data/file.png")
+add_compile_definitions(SAVE_ICON="${CMAKE_SOURCE_DIR}/data/diskwhite.png")
+add_compile_definitions(LOAD_ICON="${CMAKE_SOURCE_DIR}/data/filewhite.png")
