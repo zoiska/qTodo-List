@@ -23,6 +23,9 @@ set(PROJECT_SOURCES
         change_dialog/changedialog.cpp
         change_dialog/changedialog.h
         change_dialog/change_dialog.ui
+        mainwindow/customlistwidget.cpp
+        mainwindow/customlistwidget.h
+        mainwindow/customlistwidget.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -75,6 +78,9 @@ if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(qTodo-List)
 endif()
 
-add_compile_definitions(SAVE_FILE="${CMAKE_SOURCE_DIR}/data/tasks.csv")
-add_compile_definitions(SAVE_ICON="${CMAKE_SOURCE_DIR}/data/diskwhite.png")
-add_compile_definitions(LOAD_ICON="${CMAKE_SOURCE_DIR}/data/filewhite.png")
+add_compile_definitions(SAVE_FILE="${CMAKE_SOURCE_DIR}/data/tasks.csv"
+        COMPLETED_FILE="${CMAKE_SOURCE_DIR}/data/completed.csv"
+        SAVE_ICON="${CMAKE_SOURCE_DIR}/data/diskwhite.png"
+        LOAD_ICON="${CMAKE_SOURCE_DIR}/data/filewhite.png"
+        COMPLETED_ICON="${CMAKE_SOURCE_DIR}/data/check.png"
+)

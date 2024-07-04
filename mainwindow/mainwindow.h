@@ -7,7 +7,9 @@
 #include <QFile>
 #include "../item_dialog/itemdialog.h"
 #include "../change_dialog/changedialog.h"
+#include "customlistwidget.h"
 
+class FileHandling;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,7 +25,7 @@ public:
 
     ~MainWindow() override;
 
-public slots:
+private slots:
     void add_clicked();
     void change_clicked();
     void delete_clicked() const;
@@ -33,12 +35,16 @@ public slots:
     void load_clicked() const;
     void save_clicked() const;
 
+public slots:
+    void completed() const;
+
 private:
     void setupConnects();
     QAction *load_act;
     QAction *save_act;
     ItemDialog *itemDialog = new ItemDialog(this);
     ChangeDialog *changeDialog = new ChangeDialog(this);
+    CustomListWidget *customlistwidget = new CustomListWidget(this);
 };
 
 

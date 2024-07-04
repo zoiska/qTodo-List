@@ -41,14 +41,27 @@ void MainWindow::delete_clicked() const {
     delete ui->listWidget->takeItem(ui->listWidget->row(selectedItem));
 }
 
+void MainWindow::completed() const {
+    ui->label_out->setText("f");
+}
+
 void MainWindow::add_list_item(const QString& title, const QString& description) const {
-    ui->listWidget->addItem(title + "\n" + description);
+    auto customitem = new CustomListWidget((QWidget *) this);
+    auto item = new QListWidgetItem(title + "\n" + description);
+
+    ui->listWidget->addItem(item);
+    ui->listWidget->setItemWidget(item, customitem);
 }
 
 void MainWindow::change_list_item(const QString &title, const QString &description) const {
     QListWidgetItem *selectedItem = ui->listWidget->currentItem();
     delete ui->listWidget->takeItem(ui->listWidget->row(selectedItem));
-    ui->listWidget->addItem(title + "\n" + description);
+
+    auto customitem = new CustomListWidget((QWidget *) this);
+    auto item = new QListWidgetItem(title + "\n" + description);
+
+    ui->listWidget->addItem(item);
+    ui->listWidget->setItemWidget(item, customitem);
 }
 
 void MainWindow::create_menus() {
@@ -83,7 +96,11 @@ void MainWindow::load_clicked() const {
         {
             QString title = fields[0];
             QString description = fields[1];
-            ui->listWidget->addItem(title.replace("[COMMA]", ",") + "\n" + description.replace("[COMMA]", ",").replace("\\n", "\n"));
+
+            auto customitem = new CustomListWidget((QWidget *) this);
+            auto item = new QListWidgetItem(title.replace("[COMMA]", ",") + "\n" + description.replace("[COMMA]", ",").replace("\\n", "\n"));
+            ui->listWidget->addItem(item);
+            ui->listWidget->setItemWidget(item, customitem);
         }
     }
     file.close();
