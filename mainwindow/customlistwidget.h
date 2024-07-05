@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QFile>
 #include <QTextStream>
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class CustomListWidget; }
@@ -17,8 +18,11 @@ public:
 
     ~CustomListWidget() override;
 
-private slots:
-    void completed_clicked();
+signals:
+    void  completed_signal(CustomListWidget *widget);
+
+public slots:
+    void check_button_clicked();
 
 private:
     Ui::CustomListWidget *ui;

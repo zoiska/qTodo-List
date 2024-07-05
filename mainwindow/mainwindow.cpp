@@ -41,12 +41,39 @@ void MainWindow::delete_clicked() const {
     delete ui->listWidget->takeItem(ui->listWidget->row(selectedItem));
 }
 
-void MainWindow::completed() const {
-    ui->label_out->setText("f");
+void MainWindow::completed(CustomListWidget *widget) const {
+    ui->label_out->setText(ui->label_out->text() + "Task Completed\n");
+
+    for (int i = 0; i < ui->listWidget->count(); ++i) {
+        QListWidgetItem *item = ui->listWidget->item(i);
+        if (ui->listWidget->itemWidget(item) == widget) {
+            QFile completedFile(COMPLETED_FILE);
+            if (!completedFile.open(QIODevice::Append | QIODevice::Text)) {
+                ui->label_out->setText("F");
+                return;
+            }
+
+            QTextStream out(&completedFile);
+            QString text = item->text();
+            QStringList parts = text.split("\n");
+            QString title = parts[0].replace(",", "[COMMA]");
+            QString description = "";
+            for (int j = 1; j < parts.size() - 1; ++j) {
+                description += parts[j].replace(",", "[COMMA]") + "\\n";
+            }
+            description += parts[parts.size() - 1].replace(",", "[COMMA]");
+            out << title << "," << description << "\n";
+            completedFile.close();
+
+            delete ui->listWidget->takeItem(i);
+            break;
+        }
+    }
 }
 
 void MainWindow::add_list_item(const QString& title, const QString& description) const {
     auto customitem = new CustomListWidget((QWidget *) this);
+    connect(customitem, &CustomListWidget::completed_signal, this, &MainWindow::completed);
     auto item = new QListWidgetItem(title + "\n" + description);
 
     ui->listWidget->addItem(item);
@@ -58,6 +85,7 @@ void MainWindow::change_list_item(const QString &title, const QString &descripti
     delete ui->listWidget->takeItem(ui->listWidget->row(selectedItem));
 
     auto customitem = new CustomListWidget((QWidget *) this);
+    connect(customitem, &CustomListWidget::completed_signal, this, &MainWindow::completed);
     auto item = new QListWidgetItem(title + "\n" + description);
 
     ui->listWidget->addItem(item);
@@ -69,10 +97,12 @@ void MainWindow::create_menus() {
     load_act->setToolTip(tr("Load tasks from file"));
     load_act->setShortcut(QKeySequence("CTRL+L"));
     load_act->setIcon(QIcon(LOAD_ICON));
+
     save_act = new QAction("Save tasks", this);
     save_act->setToolTip(tr("Save current tasks"));
     save_act->setShortcut(QKeySequence("CTRL+S"));
     save_act->setIcon(QIcon(SAVE_ICON));
+
     QMenuBar *bar = menuBar();
     QMenu *file_menu = bar->addMenu(tr("Menu"));
     file_menu->addAction(load_act);
@@ -98,6 +128,7 @@ void MainWindow::load_clicked() const {
             QString description = fields[1];
 
             auto customitem = new CustomListWidget((QWidget *) this);
+            connect(customitem, &CustomListWidget::completed_signal, this, &MainWindow::completed);
             auto item = new QListWidgetItem(title.replace("[COMMA]", ",") + "\n" + description.replace("[COMMA]", ",").replace("\\n", "\n"));
             ui->listWidget->addItem(item);
             ui->listWidget->setItemWidget(item, customitem);
@@ -131,13 +162,13 @@ void MainWindow::save_clicked() const {
 }
 
 void MainWindow::setupConnects() {
-    QObject::connect(ui->button_add, &QPushButton::clicked, this, &MainWindow::add_clicked);
-    QObject::connect(ui->button_change, &QPushButton::clicked, this, &MainWindow::change_clicked);
-    QObject::connect(ui->button_delete, &QPushButton::clicked, this, &MainWindow::delete_clicked);
+    connect(ui->button_add, &QPushButton::clicked, this, &MainWindow::add_clicked);
+    connect(ui->button_change, &QPushButton::clicked, this, &MainWindow::change_clicked);
+    connect(ui->button_delete, &QPushButton::clicked, this, &MainWindow::delete_clicked);
 
-    QObject::connect(load_act, &QAction::triggered, this, &MainWindow::load_clicked);
-    QObject::connect(save_act, &QAction::triggered, this, &MainWindow::save_clicked);
+    connect(load_act, &QAction::triggered, this, &MainWindow::load_clicked);
+    connect(save_act, &QAction::triggered, this, &MainWindow::save_clicked);
 
-    QObject::connect(itemDialog, &ItemDialog::add_item, this, &MainWindow::add_list_item);
-    QObject::connect(changeDialog, &ChangeDialog::add_item, this, &MainWindow::change_list_item);
+    connect(itemDialog, &ItemDialog::add_item, this, &MainWindow::add_list_item);
+    connect(changeDialog, &ChangeDialog::add_item, this, &MainWindow::change_list_item);
 }

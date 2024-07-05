@@ -9,7 +9,6 @@
 #include "../change_dialog/changedialog.h"
 #include "customlistwidget.h"
 
-class FileHandling;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -34,9 +33,7 @@ private slots:
     void create_menus();
     void load_clicked() const;
     void save_clicked() const;
-
-public slots:
-    void completed() const;
+    void completed(CustomListWidget *widget) const;
 
 private:
     void setupConnects();

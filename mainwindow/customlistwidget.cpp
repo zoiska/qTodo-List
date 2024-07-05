@@ -5,14 +5,13 @@
 CustomListWidget::CustomListWidget(QWidget *parent) : QWidget(parent), ui(new Ui::CustomListWidget) {
     ui->setupUi(this);
     ui->item_button->setIcon(QIcon(COMPLETED_ICON));
-    connect(ui->item_button, &QPushButton::clicked, this, &CustomListWidget::completed_clicked);
+    connect(ui->item_button, &QPushButton::clicked, this, &CustomListWidget::check_button_clicked);
 }
 
 CustomListWidget::~CustomListWidget() {
     delete ui;
 }
 
-void CustomListWidget::completed_clicked() {
-    //animation green fading falling moving sideways?
-
+void CustomListWidget::check_button_clicked() {
+    emit completed_signal(this);
 }
