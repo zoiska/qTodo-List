@@ -36,6 +36,8 @@ private slots:
     void completed(CustomListWidget *widget) const;
 
 private:
+    void load_completed() const;
+    void add_completed_item(const QString& title, const QString &description) const;
     void setupConnects();
     QAction *load_act;
     QAction *save_act;

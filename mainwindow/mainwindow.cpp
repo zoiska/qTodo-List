@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     create_menus();
     setupConnects();
     load_clicked();
+    load_completed();
 }
 
 MainWindow::~MainWindow() {
@@ -65,10 +66,41 @@ void MainWindow::completed(CustomListWidget *widget) const {
             out << title << "," << description << "\n";
             completedFile.close();
 
-            delete ui->listWidget->takeItem(i);
+            add_completed_item(title, description);
             break;
         }
     }
+}
+
+void MainWindow::load_completed() const {
+    ui->listWidget_2->clear();
+    QFile file(COMPLETED_FILE);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        ui->label_out->setText("Failed to open file");
+        return;
+    }
+    QTextStream in(&file);
+    while (!in.atEnd())
+    {
+        QString line = in.readLine();
+        QStringList fields = line.split(",");
+        if (fields.size() == 2)
+        {
+            QString title = fields[0];
+            QString description = fields[1];
+
+            auto item = new QListWidgetItem(title.replace("[COMMA]", ",") + "\n" + description.replace("[COMMA]", ",").replace("\\n", "\n"));
+            ui->listWidget_2->addItem(item);
+        }
+    }
+    file.close();
+}
+
+void MainWindow::add_completed_item(const QString& title, const QString &description) const {
+    auto item = new QListWidgetItem(title + "\n" + description);
+
+    ui->listWidget_2->addItem(item);
 }
 
 void MainWindow::add_list_item(const QString& title, const QString& description) const {
