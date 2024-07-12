@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1247</width>
-    <height>760</height>
+    <height>761</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@ QMenuBar::item {
 }
 
 QMenuBar::item:selected {
-    background: #a8a8a8;
+    background: #66666a;
 }
 
 QMenuBar::item:pressed {
@@ -123,7 +123,7 @@ QLabel {
 }
 
 QPushButton {
-    background-color: #2e2e31;
+    background-color: #404044;
     color: #ffffff;
     border: 1px solid #555b65;
     border-radius: 5px;
@@ -132,14 +132,15 @@ QPushButton {
 }
 
 QPushButton:hover {
-    background-color: #3e3e41;
-    border: 1px solid #666666;
+    background-color:  #66666a;
+    border: 1px solid #555b65;
 }
 
 QPushButton:pressed {
-    background-color: #1e1e21;
-    border: 1px solid #444444;
-}</string>
+    background-color: #888888;
+    border: 1px solid #555b65;
+}
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="enabled">
@@ -152,6 +153,9 @@ QPushButton:pressed {
     </sizepolicy>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="spacing">
+     <number>6</number>
+    </property>
     <property name="leftMargin">
      <number>9</number>
     </property>
@@ -160,6 +164,9 @@ QPushButton:pressed {
     </property>
     <property name="rightMargin">
      <number>9</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
     </property>
     <item>
      <layout class="QGridLayout" name="gridLayout" rowstretch="0" columnstretch="7,1">
@@ -409,7 +416,7 @@ QPushButton:pressed {
              <x>0</x>
              <y>0</y>
              <width>151</width>
-             <height>516</height>
+             <height>524</height>
             </rect>
            </property>
            <property name="sizePolicy">
